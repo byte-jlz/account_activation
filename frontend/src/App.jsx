@@ -7,8 +7,6 @@ import ProtectedLayout from "./pages/Layouts/ProtectedLayout"
 import Profile from "./pages/Profile"
 import Activate from "./pages/Activate"
 
-
-
 function App() {
 
   return (
@@ -19,11 +17,10 @@ function App() {
         
       </Route>
 
-      <Route path="register" element={<Register />} />
-
       <Route element={<AuthLayout />}>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
       </Route>
       
       <Route path="/activate/:uid/:token" element={<Activate />} />

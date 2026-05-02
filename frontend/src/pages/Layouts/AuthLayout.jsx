@@ -1,68 +1,70 @@
 import React from 'react'
-import { Outlet} from 'react-router'
-import {NavLink, Navigate} from 'react-router-dom'
+import { Outlet } from 'react-router'
+import { NavLink, Navigate } from 'react-router-dom'
+import Login from './../Login';
 
 
 const AuthLayout = () => {
     const token = localStorage.getItem('auth_token')
 
+    // If they are already logged in, send them to the protected app
     if (token) {
-        return <Navigate to={"/"} />
+        return <Navigate to={"/dashboard"} />
     }
 
     return (
-    <div className="min-h-screen flex flex-col bg-black">
-        <header className="bg-gray-900 text-white shadow-lg">
-            <div className="navbar bg-gray-900 text-white">
-                <div className="navbar-start">
-                    <NavLink
-                        to="/dashboard"
-                        className="btn btn-ghost text-xl font-bold text-white hover:bg-gray-800"
-                    >
-                        Medi-Kiosk
-                    </NavLink>
+        // Added a subtle radial gradient background to make the dark mode look premium
+        <div className="min-h-screen flex flex-col bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-black to-black">
+            
+            {/* Sticky Glassmorphism Header */}
+            <header className="sticky top-0 z-50 bg-gray-900/60 backdrop-blur-lg border-b border-gray-800">
+                <div className="navbar max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                    
+                    {/* Brand Logo */}
+                    <div className="navbar-start flex items-center gap-2">
+                        {/* Added a Medical/Health Cross Icon */}
+                        <div className="p-1.5 bg-blue-600 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                        </div>
+                        <NavLink to="/" className="text-xl font-bold text-white tracking-wide hover:text-blue-400 transition-colors">
+                            Medi-Kiosk
+                        </NavLink>
+                    </div>
+
+                    {/* Navigation Links */}
+                    <div className="navbar-end flex items-center gap-4">
+                        <NavLink 
+                            to="/login" 
+                            className={({ isActive }) =>
+                                `text-sm font-medium transition-colors ${isActive ? "text-blue-400" : "text-gray-300 hover:text-white"}`
+                            }
+                        >
+                            Login
+                        </NavLink>
+
+                        <NavLink 
+                            to="/register" 
+                            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-lg shadow-lg shadow-blue-500/20 transition-all"
+                        >
+                            Create Account
+                        </NavLink>
+                    </div>
                 </div>
+            </header>
 
-                <div className="navbar-end gap-2">
-                    <NavLink
-                        to="/login"
-                        className={({ isActive }) =>
-                            isActive ? "btn btn-primary" : "btn btn-ghost text-white hover:bg-gray-800"
-                        }
-                    >
-                        Login
-                    </NavLink>
+            {/* Main Content Area - Centers your Login/Register cards perfectly */}
+            <main className="flex-grow flex items-center justify-center px-4 py-12">
+                <Outlet />
+            </main>
 
-                    <NavLink
-                        to="/register"
-                        className={({ isActive }) =>
-                            isActive ? "btn btn-primary" : "btn btn-ghost text-white hover:bg-gray-800"
-                        }
-                    >
-                        Register
-                    </NavLink>
-
-                    <NavLink
-                        to="/"
-                        className={({ isActive }) =>
-                            isActive ? "btn btn-primary" : "btn btn-ghost text-white hover:bg-gray-800"
-                        }
-                    >
-                        
-                    </NavLink>
-                </div>
-            </div>
-        </header>
-
-        <main className="flex-grow flex items-center justify-center px-4">
-            <Outlet />
-        </main>
-
-        <footer className="bg-gray-900 text-white text-center py-6 border-t border-gray-800">
-            <p>&copy; 2026 Account Activation. All rights reserved.</p>
-        </footer>
-    </div>
-  )
+            {/* Minimal Footer */}
+            <footer className="border-t border-gray-800/60 py-6 text-center text-sm text-gray-500">
+                <p>&copy; 2026 Medi-Kiosk Systems. All rights reserved.</p>
+            </footer>
+        </div>
+    )
 }
 
 export default AuthLayout
